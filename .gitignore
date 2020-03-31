@@ -1,0 +1,8 @@
+.idea
+target
+src/test/*
+*.class
+*.war
+*.jar
+*.ear
+*.iml
