@@ -1,8 +1,10 @@
 package com.example.springwebapp.controller;
 
 import com.example.springwebapp.domain.Message;
+import com.example.springwebapp.domain.User;
 import com.example.springwebapp.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,19 +20,23 @@ public class MainController {
     public String greeting(Map<String, Object> model) {
         return "greeting";
     }
+
     @GetMapping("/main")
     public String main(Map <String, Object> model) {
 
         Iterable<Message> messages = messageRepo.findAll();
-        model.put("messages", messages);
+        model.put("messages", messages); // we put in model data that needs to be returned to user
 
         return "main";
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String text, @RequestParam String tag, Map<String, Object> model) {
+    public String add(
+            @AuthenticationPrincipal User user,
+            @RequestParam String text,
+            @RequestParam String tag, Map<String, Object> model) {
         //saving message in repo
-        Message message = new Message(text, tag);
+        Message message = new Message(text, tag, user);
         messageRepo.save(message);
         //taking message from repo and giving it to user
         Iterable<Message> messages = messageRepo.findAll();
