@@ -4,5 +4,6 @@ import com.example.springwebapp.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    User findByUsername(String username); // the naming of methods is
+    // the naming of methods is defined by spring jpa documentation
+    User findByUsername(String username);
 }
